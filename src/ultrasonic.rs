@@ -53,6 +53,6 @@ pub async fn task(
         *crate::sensor_data::DISTANCE_CM.lock().await = Some(distance_cm);
         distance_signal.signal(distance_cm);
 
-        Timer::after(Duration::from_millis(100)).await;
+        Timer::after(Duration::from_millis(500)).await;
     }
 }

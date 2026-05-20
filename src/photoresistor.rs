@@ -2,15 +2,17 @@ use embassy_time::{Duration, Timer};
 use esp_hal::{
     Blocking,
     analog::adc::{Adc, AdcConfig, AdcPin, Attenuation},
-    peripherals::{ADC1, GPIO33},
+    peripherals::{ADC1, GPIO34},
 };
 
+type PhotoresistorPin = GPIO34<'static>;
+
 pub fn new(
-    gpio: GPIO33<'static>,
+    gpio: PhotoresistorPin,
     adc_peripheral: ADC1<'static>,
 ) -> (
     Adc<'static, ADC1<'static>, Blocking>,
-    AdcPin<GPIO33<'static>, ADC1<'static>>,
+    AdcPin<PhotoresistorPin, ADC1<'static>>,
 ) {
     let mut config = AdcConfig::new();
     let pin = config.enable_pin(gpio, Attenuation::_11dB);
@@ -21,7 +23,7 @@ pub fn new(
 #[embassy_executor::task]
 pub async fn task(
     mut adc1: Adc<'static, ADC1<'static>, Blocking>,
-    mut pin: AdcPin<GPIO33<'static>, ADC1<'static>>,
+    mut pin: AdcPin<PhotoresistorPin, ADC1<'static>>,
 ) {
     loop {
         let value: u16 = nb::block!(adc1.read_oneshot(&mut pin)).unwrap();

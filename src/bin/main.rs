@@ -41,9 +41,9 @@ async fn main(spawner: Spawner) -> ! {
     let distance_signal = DISTANCE_SIGNAL.init(Signal::new());
 
     // Sensors + actuators
-    let sensor = dht11::new(peripherals.GPIO32);
-    let (adc1, adc_pin) = photoresistor::new(peripherals.GPIO33, peripherals.ADC1);
-    let buzzer_out = buzzer::new(peripherals.GPIO14);
+    let sensor = dht11::new(peripherals.GPIO33);
+    let (adc1, adc_pin) = photoresistor::new(peripherals.GPIO34, peripherals.ADC1);
+    let buzzer_out = buzzer::new(peripherals.GPIO19);
     let (trig, echo) = ultrasonic::new(peripherals.GPIO16, peripherals.GPIO18);
 
     // WiFi + network stack
