@@ -47,8 +47,10 @@ pub async fn task(
         }
 
         let pulse_width = time1.elapsed().as_micros();
-        let distance_cm = (pulse_width * 343 / 20000) as u32;
+        let distance_cm = u32::try_from(pulse_width * 343 / 20_000).unwrap_or(u32::MAX);
         esp_println::println!("Distance: {} cm", distance_cm);
+
+        *crate::sensor_data::DISTANCE_CM.lock().await = Some(distance_cm);
         distance_signal.signal(distance_cm);
 
         Timer::after(Duration::from_millis(100)).await;

@@ -2,12 +2,14 @@
 runner = "espflash flash --monitor --chip esp32 --log-format defmt"
 
 [env]
-DEFMT_LOG="info"
+DEFMT_LOG = "info"
+SSID = "FAMILIA_CUADROS"
+PASSWORD = "Yeyo*0207"
+IOT_SERVER_HOST = "rust-iot-gateway-fragrant-harborbird-9015.fly.dev"
+IOT_SERVER_PATH = "/devices/esp32-node-01/ingest"
 
 [build]
-rustflags = [
-  "-C", "link-arg=-nostartfiles",
-]
+rustflags = ["-C", "link-arg=-nostartfiles"]
 
 target = "xtensa-esp32-none-elf"
 

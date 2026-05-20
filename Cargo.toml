@@ -1,8 +1,8 @@
 [package]
-edition      = "2024"
-name         = "ultrasonic_alert_temperature_humidity"
-rust-version = "1.88"
-version      = "0.1.0"
+edition = "2024"
+name = "ultrasonic_alert_temperature_humidity"
+rust-version = "1.91"
+version = "0.1.0"
 
 [[bin]]
 name = "ultrasonic_alert_temperature_humidity"
@@ -21,7 +21,7 @@ esp-rtos = { version = "0.3.0", features = [
   "esp32",
 ] }
 
-defmt                  = "1.0.1"
+defmt = "1.0.1"
 esp-bootloader-esp-idf = { version = "0.5.0", features = ["defmt", "esp32"] }
 
 embassy-net = { version = "0.9.1", features = [
@@ -30,6 +30,8 @@ embassy-net = { version = "0.9.1", features = [
   "medium-ethernet",
   "tcp",
   "udp",
+  #addition:
+  "dns",
 ] }
 embedded-io = { version = "0.7.1", features = ["defmt"] }
 embedded-io-async = { version = "0.7.0", features = ["defmt"] }
@@ -57,12 +59,15 @@ smoltcp = { version = "0.13.0", default-features = false, features = [
   "socket-raw",
   "socket-tcp",
   "socket-udp",
+  # addition:
+  "dns-max-server-count-4",
 ] }
 
 critical-section = "1.2.0"
 static_cell      = "2.1.1"
 embassy-sync     = { version = "0.6.0", features = ["defmt"] }
-embedded-dht-rs = { version = "0.5.0", features = ["dht11"] }
+heapless         = { version = "0.8.0", default-features = false }
+embedded-dht-rs  = { version = "0.5.0", features = ["dht11"] }
 
 
 # For fine tuning these settings, please refer to https://doc.rust-lang.org/cargo/reference/profiles.html
@@ -72,7 +77,7 @@ embedded-dht-rs = { version = "0.5.0", features = ["dht11"] }
 opt-level = "s"
 
 [profile.release]
-codegen-units = 1     # LLVM can perform better optimizations using a single thread
-debug         = 2     # prefer slower builds but better debugging experience
-lto           = 'fat'
-opt-level     = 's'
+codegen-units = 1 # LLVM can perform better optimizations using a single thread
+debug = 2         # prefer slower builds but better debugging experience
+lto = 'fat'
+opt-level = 's'

@@ -20,13 +20,21 @@ pub fn new(gpio: impl Pin + 'static) -> Dht11<Flex<'static>, Delay> {
 
 #[embassy_executor::task]
 pub async fn task(mut dht11: Dht11<Flex<'static>, Delay>) {
+    Timer::after(Duration::from_secs(2)).await; // sensor warm-up
     loop {
         match dht11.read() {
-            Ok(r) => esp_println::println!(
-                "DHT11 - Temp: {} °C, Humidity: {} %",
-                r.temperature,
-                r.humidity
-            ),
+            Ok(r) => {
+                esp_println::println!(
+                    "DHT11 - Temp: {} °C, Humidity: {} %",
+                    r.temperature,
+                    r.humidity
+                );
+                *crate::sensor_data::DHT.lock().await =
+                    Some(crate::sensor_data::DhtData {
+                        temperature: r.temperature,
+                        humidity: r.humidity,
+                    });
+            }
             Err(e) => esp_println::println!("DHT11 read error: {:?}", e),
         }
         Timer::after(Duration::from_secs(2)).await;
