@@ -15,7 +15,7 @@ pub fn new(
     AdcPin<PhotoresistorPin, ADC1<'static>>,
 ) {
     let mut config = AdcConfig::new();
-    let pin = config.enable_pin(gpio, Attenuation::_2p5dB);
+    let pin = config.enable_pin(gpio, Attenuation::_6dB);
     let adc1 = Adc::new(adc_peripheral, config);
     (adc1, pin)
 }
